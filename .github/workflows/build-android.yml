@@ -16,11 +16,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js 20
+      - name: Set up Node.js 22 (LTS)
         uses: actions/setup-node@v4
         with:
-          node-version: 20
-          cache: 'npm'
+          node-version: 22
 
       - name: Install Node dependencies
         run: |
@@ -61,6 +60,7 @@ jobs:
         with:
           name: CreatorFlow-Debug-APK
           path: android/app/build/outputs/apk/debug/*.apk
+          if-no-files-found: warn
           retention-days: 14
 
       - name: Upload Release APK
@@ -68,6 +68,7 @@ jobs:
         with:
           name: CreatorFlow-Release-APK
           path: android/app/build/outputs/apk/release/*.apk
+          if-no-files-found: warn
           retention-days: 14
 
       - name: Upload Release AAB
@@ -75,4 +76,5 @@ jobs:
         with:
           name: CreatorFlow-Release-AAB
           path: android/app/build/outputs/bundle/release/*.aab
+          if-no-files-found: warn
           retention-days: 14
