@@ -1,0 +1,6 @@
+{
+  "name": "CreatorFlow",
+  "description": "Professional AI Creator & Growth Studio for YouTube and Social Media Creators",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
