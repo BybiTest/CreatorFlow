@@ -42,6 +42,12 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
+      - name: Ensure Release Keystore
+        run: |
+          if [ ! -f android/app/release.keystore ]; then
+            keytool -genkey -v -keystore android/app/release.keystore -alias creatorflow -keyalg RSA -keysize 2048 -validity 10000 -storepass creatorflowpass -keypass creatorflowpass -dname "CN=CreatorFlow, OU=App, O=CreatorFlow, L=Tehran, S=Tehran, C=IR"
+          fi
+
       - name: Accept Android SDK Licenses
         run: |
           yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
@@ -55,15 +61,15 @@ jobs:
 
       - name: Build Debug APK
         working-directory: android
-        run: ./gradlew assembleDebug -x lint -x test --no-daemon --stacktrace
+        run: ./gradlew assembleDebug --no-daemon --stacktrace
 
       - name: Build Release APK
         working-directory: android
-        run: ./gradlew assembleRelease -x lint -x lintVitalRelease -x test --no-daemon --stacktrace
+        run: ./gradlew assembleRelease --no-daemon --stacktrace
 
       - name: Build Release Bundle (AAB)
         working-directory: android
-        run: ./gradlew bundleRelease -x lint -x lintVitalRelease -x test --no-daemon --stacktrace
+        run: ./gradlew bundleRelease --no-daemon --stacktrace
 
       - name: Upload Debug APK
         uses: actions/upload-artifact@v4
