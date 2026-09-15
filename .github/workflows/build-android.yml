@@ -36,17 +36,16 @@ jobs:
         run: |
           npx cap sync android
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21 (Required for Capacitor 7)
         uses: actions/setup-java@v5
         with:
           distribution: 'temurin'
-          java-version: '17'
+          java-version: '21'
 
       - name: Ensure Release Keystore
         run: |
-          if [ ! -f android/app/release.keystore ]; then
-            keytool -genkey -v -keystore android/app/release.keystore -alias creatorflow -keyalg RSA -keysize 2048 -validity 10000 -storepass creatorflowpass -keypass creatorflowpass -dname "CN=CreatorFlow, OU=App, O=CreatorFlow, L=Tehran, S=Tehran, C=IR"
-          fi
+          rm -f android/app/release.keystore
+          keytool -genkeypair -v -keystore android/app/release.keystore -alias creatorflow -keyalg RSA -keysize 2048 -validity 10000 -storepass creatorflowpass -keypass creatorflowpass -dname "CN=CreatorFlow, OU=App, O=CreatorFlow, L=Tehran, S=Tehran, C=IR"
 
       - name: Accept Android SDK Licenses
         run: |
